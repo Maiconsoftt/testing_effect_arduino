@@ -4,6 +4,7 @@
 #include "stimuli_control.hpp"
 #include "gate_controller.hpp"
 #include "constants.hpp"
+#include "randomizations.hpp"
 #include <SoftwareSerial.h>
 
 void commands () {
@@ -18,14 +19,10 @@ void commands () {
 // repertory training routine
 void repertory_trainning () {
 
-  Serial.println ("Initializing Repertoy Training"); 
-  delay (500); //print this to csv file with timestamp!
-  Serial.println ("Randomizing arm to open the gate"); 
-  delay (500);
+  Serial.println ("Initializing Repertoy Training"); delay (500); //print this to csv file with timestamp!
+  Serial.println ("Randomizing arm to open the gate"); delay (500);
 
-  String random_repertory_gate = CONSTANTS::gates_array[random (0, 3)]; //randomize a number from 1 to 3 that corresponds to the target gates'
-  ExperimentConfiguration::set_current_repertory_gate(random_repertory_gate);
-  String randomized_repertory_gate = ExperimentConfiguration::get_current_repertory_gate();
+  randomize_gate_for_repertory_trainning();
 
   Serial.print ("Oppening ");
   Serial.println (ExperimentConfiguration::get_current_repertory_gate());
@@ -33,21 +30,23 @@ void repertory_trainning () {
 
   //openning the target gate from randomization
 
-  Gates::open_gate_by_name(randomized_repertory_gate);
+  Gates::open_gate_by_name(ExperimentConfiguration::get_current_repertory_gate());
 }
 
 void Repeat_Repertory_trainning () {
   Serial.println ("Closing the Gate");
-  String current_gate = ExperimentConfiguration::get_current_repertory_gate();
-  Gates::close_gate_by_name(current_gate);
+
+  String current_gate_repertory = ExperimentConfiguration::get_current_repertory_gate();
+  Gates::close_gate_by_name(current_gate_repertory);
+
   Serial.println ("The gate was closed! Wait 5 seconds");
   delay (5000);
-  randomSeed(analogRead(random(0, 6)));
+
+  random_seed_repeat ();
 }
 
 void End_Repertory_trainning () { //bonsai needs to calculate the time!
   // bonsai needs to work here !! so it can finish the first trial and randomize again
-
   Serial.print("Closing the gate");
   String current_gate = ExperimentConfiguration::get_current_repertory_gate();
   Gates::close_gate_by_name(current_gate);
@@ -56,7 +55,6 @@ void End_Repertory_trainning () { //bonsai needs to calculate the time!
 
 void execute_pairs_stage_1 (){
   execute_paired_stimuli();
-
 }
 
 void execute_working_sound_stage_2(){
