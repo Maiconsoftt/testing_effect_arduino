@@ -10,7 +10,11 @@
 
 using namespace CONSTANTS;
 
-
+void randomize_gate_for_repertory_trainning(){
+    String random_repertory_gate = CONSTANTS::gates_array[random (0, 3)]; //randomize a number from 1 to 3 that corresponds to the target gates'
+    ExperimentConfiguration::set_current_repertory_gate(random_repertory_gate);
+}
+  
 void randomize_pairs_sounds_and_figures() {
   Serial.print ("Recived! Configuring and creating conditions to Mouse "); //print to csv
   delay (500);
@@ -113,20 +117,24 @@ void Randomize_gates_for_stages () {
     basal_gate_2 = gates_array [2];
     ExperimentConfiguration::set_current_basal_gate_1(basal_gate_1);
     ExperimentConfiguration::set_current_basal_gate_2(basal_gate_2);
-    Gates::open_left_gate();
+    Gates::open_gate_by_name (randomized_gate);
   }
   else if (randomized_gate == gates_array [1]) {
     basal_gate_1 = gates_array [0];
     basal_gate_2 = gates_array [2];
     ExperimentConfiguration::set_current_basal_gate_1(basal_gate_1);
     ExperimentConfiguration::set_current_basal_gate_2(basal_gate_2);
-    Gates::open_center_gate();
+    Gates::open_gate_by_name (randomized_gate);
   }
   else if (randomized_gate == gates_array [2]) {
     basal_gate_1 = gates_array [0];
     basal_gate_2 = gates_array [1];
     ExperimentConfiguration::set_current_basal_gate_1(basal_gate_1);
     ExperimentConfiguration::set_current_basal_gate_2(basal_gate_2);
-    Gates::open_right_gate();
+    Gates::open_gate_by_name (randomized_gate);
   }
+}
+
+void random_seed_repeat (){
+    randomSeed(analogRead(random(0, 6)));
 }
