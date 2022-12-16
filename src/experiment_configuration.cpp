@@ -91,6 +91,14 @@ String ExperimentConfiguration::get_current_basal_gate_2(){
 	return ExperimentConfiguration::current_basal_gate_2;
 }
 
+String ExperimentConfiguration::get_current_basal_figure_1(){
+	return ExperimentConfiguration::current_basal_figure_1;
+}
+
+String ExperimentConfiguration::get_current_basal_figure_2(){
+	return ExperimentConfiguration::current_basal_figure_2;
+}
+
 void ExperimentConfiguration::set_pair_x_figure(String new_figure){
 	ExperimentConfiguration::pair_x_figure = new_figure;
 }

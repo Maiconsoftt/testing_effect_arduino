@@ -2,10 +2,10 @@
 #define STIMULI_CONTROL_HPP__
 #include <Arduino.h>
 
-void start_light_stimulus(String received_figure);
+
+void start_light_stimulus(String gate_name, String received_figure);
 void start_sound_stimulus(String som_randomizado);
-void start_basal_light_stimulus_1(String basal_light_1);
-void start_basal_light_stimulus_2(String basal_light_2);
+void start_basal_light_stimulus(String gate_name, String basal_light_1);
 void start_all_lights_basal_mode ();
 
 void open_target_gate(String randomized_gate);
