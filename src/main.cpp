@@ -5,6 +5,8 @@
 #include "output_controller.hpp"
 #include "gate_controller.hpp"
 #include "randomizations.hpp"
+#include "constants.hpp"
+#include "parameters.hpp"
 
 char buff[35];
 
@@ -29,24 +31,24 @@ void loop() {
 
   if (Serial.available()) { //if serial receives more than 0 bytes, than there is someting to read
 
-    String a = Serial.readString();
+    String recieved_input_serial = Serial.readString();
 
-    if (a == "commands\r\n") {
+    if (recieved_input_serial == "commands\r\n") {
       commands ();
     }
 
-    else if (a == "mouseID\r\n") {
+    else if (recieved_input_serial == "mouseID\r\n") {
 
       Serial.println("Type Mouse Identification Number");
 
       while (Serial.available () == 0) {}
-      a = Serial.readString();
+      recieved_input_serial = Serial.readString();
       randomize_pairs_sounds_and_figures();
       delay (100);
     }
 
     //stage_0 - repertory training
-    else if (a == "stage0\r\n") {
+    else if (recieved_input_serial == "stage0\r\n") {
       Serial.println ("Put the mouse at the central compartment");
       Serial.println ("Initializing Repertory Trainning in 60 seconds");
       for (int i = 0; i <= 60; i ++) {
@@ -57,30 +59,33 @@ void loop() {
       repertory_trainning ();
     }
 
-    else if (a == "repeat\r\n") {
+    else if (recieved_input_serial == "repeat\r\n") {
       delay (100);
       Repeat_Repertory_trainning ();
       repertory_trainning ();
     }
 
-    else if (a == "end\r\n") {
+    else if (recieved_input_serial == "end\r\n") {
       delay (100);
       End_Repertory_trainning ();
     }
 
-    else if (a == "Stage1\r\n"){
+    else if (recieved_input_serial == "Stage1\r\n"){
       ExperimentConfiguration::set_current_pair("0");
+    
+      ExperimentConfiguration::set_current_basal_figure_1(ExperimentConfiguration::pair_y_figure);
+      ExperimentConfiguration::set_current_basal_figure_2(ExperimentConfiguration::pair_z_figure);
       
       for (int trial = 0; trial < 8; trial ++){
         Randomize_gates_for_stages ();
         execute_pairs_stage_1 ();
 
         shutdown_all_displays();
-        delay(40000);
+        delay(PARAMETER::INTERVAL_BETWEEN_TRIALS);
       }
     }
 
-    else if (a == "Stage2\r\n"){
+    else if (recieved_input_serial == "Stage2\r\n"){
       ExperimentConfiguration::set_current_pair ("0");
 
       for (int trial = 0; trial < 8; trial ++){
@@ -88,11 +93,11 @@ void loop() {
         execute_working_sound_stage_2();
 
         shutdown_all_displays();
-        delay (40000);
+        delay (PARAMETER::INTERVAL_BETWEEN_TRIALS);
       }
     }
 
-    else if (a == "Stage3\r\n"){
+    else if (recieved_input_serial == "Stage3\r\n"){
       ExperimentConfiguration::set_current_pair("1");
       
       for (int trial = 0; trial < 8; trial ++){
@@ -100,11 +105,11 @@ void loop() {
         execute_pairs_stage_1 ();
 
         shutdown_all_displays();
-        delay(40000);
+        delay(PARAMETER::INTERVAL_BETWEEN_TRIALS);
       }
     }
 
-    else if (a == "Stage4\r\n"){
+    else if (recieved_input_serial == "Stage4\r\n"){
       ExperimentConfiguration::set_current_pair ("1");
 
       for (int trial = 0; trial < 8; trial ++){
@@ -112,7 +117,7 @@ void loop() {
         execute_working_sound_stage_2();
 
         shutdown_all_displays();
-        delay (40000);
+        delay (PARAMETER::INTERVAL_BETWEEN_TRIALS);
       }
     }
   }
