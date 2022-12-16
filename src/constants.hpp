@@ -14,6 +14,8 @@ SYSTEM PARAMETERS
     const int CENTER_GATE_PIN = 3;
     const int RIGHT_GATE_PIN = 4;
 
+    const int SERVO_INITIAL_POSITION = 0;
+
 /*
 EXPERIMENT PARAMETERS
 */
@@ -25,6 +27,7 @@ EXPERIMENT PARAMETERS
 
 }
 namespace CONSTANTS {
+
     const String Figure_X = "Figure_X";
 
     const char figures [3][9] = {"Figure_X", "Figure_O", "Figure_+"}; 
