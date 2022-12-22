@@ -37,7 +37,7 @@ void Gates::close_all_gates() {
   }
 }
 
-void Gates::open_gate_by_name(String gate_name){
+void Gates::open_gate_by_name(int gate_name){
     if (gate_name == CONSTANTS::gates_array[0]) {
         for (int angulo; angulo <= 150; angulo += 1) { // Comando que muda a posição do servo de 0 para 180°
         leftGate.write(angulo); // Comando para angulo específico
@@ -58,7 +58,7 @@ void Gates::open_gate_by_name(String gate_name){
     }
 }
 
-void Gates::close_gate_by_name(String gate_name){
+void Gates::close_gate_by_name(int gate_name){
     if (gate_name == CONSTANTS::gates_array[0]) {
         for (int angulo = 150; angulo >= 1; angulo -= 1) { // Comando que muda a posição do servo de 180 para 0°
         leftGate.write(angulo); // Comando para angulo específico
