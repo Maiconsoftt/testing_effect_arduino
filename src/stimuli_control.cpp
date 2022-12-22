@@ -5,77 +5,77 @@
 #include "parameters.hpp"
 
 
-void start_light_stimulus(String gate_name, String received_figures){
-    LedControl led_matrix_controller = get_led_array_by_gate_name(gate_name);
+void start_light_stimulus(int gate_number, int received_figures){
+    LedControl led_matrix_controller = get_led_array_by_gate_name(gate_number);
 
-    if (received_figures == CONSTANT::Figure_X){
+    if (received_figures == 0){
         draw_X(led_matrix_controller, PARAMETER::MAX_INTENSITY_VALUE);
     }
-    else if (received_figures == "Figure_O"){
+    else if (received_figures == 1){
         draw_ball(led_matrix_controller, PARAMETER::MAX_INTENSITY_VALUE); 
     }
-    else if (received_figures == "Figure_+"){
+    else if (received_figures == 2){
         draw_plus(led_matrix_controller, PARAMETER::MAX_INTENSITY_VALUE);
     }
 }
 
-void start_basal_light_stimulus(String gate_name, String figure){
-    LedControl led_matrix_controller = get_led_array_by_gate_name(gate_name);
+void start_basal_light_stimulus(int gate_number, int figure){
+    LedControl led_matrix_controller = get_led_array_by_gate_name(gate_number);
     
-    if (figure == "Figure_X"){  
+    if (figure == 0){  
         draw_X (led_matrix_controller, PARAMETER::MIN_INTENSITY_VALUE);
     }
-    else if (figure == "Figure_O"){
+    else if (figure == 1){
         draw_ball (led_matrix_controller, PARAMETER::MIN_INTENSITY_VALUE);
     }
-    else if (figure == "Figure_+"){
+    else if (figure == 2){
         draw_plus (led_matrix_controller, PARAMETER::MIN_INTENSITY_VALUE);
     }
 }
 
-void start_light_1_basal_mode (String gate_name_1, String figure_1){
-    start_basal_light_stimulus (gate_name_1, figure_1); 
+void start_light_1_basal_mode (int first_gate_number, int first_figure){
+    start_basal_light_stimulus (first_gate_number, first_figure); 
 }
-void start_light_2_basal_mode (String gate_name_2, String figure_2){
-    start_basal_light_stimulus (gate_name_2, figure_2); 
+void start_light_2_basal_mode (int second_gate_number, int second_figure){
+    start_basal_light_stimulus (second_gate_number, second_figure); 
 }
-void start_light_3_basal_mode (String gate_name_3, String figure_3){
-    start_basal_light_stimulus (gate_name_3, figure_3); 
+void start_light_3_basal_mode (int thrid_gate_number, int thrid_figure){
+    start_basal_light_stimulus (thrid_gate_number, thrid_figure); 
 }
 
 
-void start_sound_stimulus(String randomized_sound){
-    if (randomized_sound == "100 Hz"){
+void start_sound_stimulus(int randomized_sound){
+    if (randomized_sound == 0){
         Low_Frequency();
     }
-    else if (randomized_sound == "750 Hz"){
+    else if (randomized_sound == 1){
         Medium_Frequency();
     }
-    else if (randomized_sound == "2000Hz"){
+    else if (randomized_sound == 2){
         High_Frequency();
     }
 }
 
-void open_target_gate(String randomized_gate){
-    if (randomized_gate == "Left Gate"){
+void open_target_gate(int randomized_gate){
+    if (randomized_gate == 1){
         Gates::open_gate_by_name (randomized_gate);
     }
-       else if (randomized_gate == "CenterGate"){
+       else if (randomized_gate == 2){
         Gates::open_gate_by_name (randomized_gate);
     }
-        else if (randomized_gate == "Right Gate"){
+        else if (randomized_gate == 3){
         Gates::open_gate_by_name (randomized_gate);
     }
 }
 
-void close_target_gate(String randomized_gate){
-    if (randomized_gate == "Left Gate"){
+void close_target_gate(int randomized_gate){
+    if (randomized_gate == 1){
         Gates::close_gate_by_name (randomized_gate);
     }
-       else if (randomized_gate == "CenterGate"){
+       else if (randomized_gate == 2){
         Gates::close_gate_by_name (randomized_gate);
     }
-        else if (randomized_gate == "Right Gate"){
+        else if (randomized_gate == 3){
         Gates::close_gate_by_name (randomized_gate);
     }
 }
