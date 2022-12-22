@@ -15,6 +15,9 @@ void randomize_gate_for_repertory_trainning(){
 }
 
 void randomize_and_create_pairs (){
+
+  Serial.println ("Recieved! Configuring pairs to Mouse " + ExperimentConfiguration::get_mouse_id());
+
   int x_figure = random (0,3); int x_sound = random (0,3);
   int y_figure = random (0,3); int y_sound = random (0,3); 
   int z_figure = random (0,3); int z_sound = random (0,3);
