@@ -2,6 +2,7 @@
 #include "tasks.hpp"
 #include "experiment_configuration.hpp"
 #include "stimuli_control.hpp"
+#include "serial_prints.hpp"
 #include "output_controller.hpp"
 #include "gate_controller.hpp"
 #include "randomizations.hpp"
@@ -14,7 +15,7 @@ void setup() {
 
   Serial.begin(9600); // boudrate of serialport communication
 
-  ExperimentConfiguration::set_current_pair("0");
+  ExperimentConfiguration::set_current_pair(0);
   Gates::setup_gates();
   controllers_setup();
   randomSeed(analogRead(5)); //read random noise from analog pin 5 and generate random seeds
@@ -43,7 +44,14 @@ void loop() {
 
       while (Serial.available () == 0) {}
       recieved_input_serial = Serial.readString();
-      randomize_pairs_sounds_and_figures();
+      ExperimentConfiguration::set_current_pair(0);
+
+      randomize_and_create_pairs ();
+      
+      print_pairs ();
+
+      Serial.println (String(ExperimentConfiguration::get_pair_x_figure()));
+      Serial.println (String(ExperimentConfiguration::get_pair_x_sound()));
       delay (100);
     }
 
@@ -71,7 +79,7 @@ void loop() {
     }
 
     else if (recieved_input_serial == "Stage1\r\n"){
-      ExperimentConfiguration::set_current_pair("0");
+      ExperimentConfiguration::set_current_pair(0);
     
       ExperimentConfiguration::set_current_basal_figure_1(ExperimentConfiguration::pair_y_figure);
       ExperimentConfiguration::set_current_basal_figure_2(ExperimentConfiguration::pair_z_figure);
@@ -86,7 +94,7 @@ void loop() {
     }
 
     else if (recieved_input_serial == "Stage2\r\n"){
-      ExperimentConfiguration::set_current_pair ("0");
+      ExperimentConfiguration::set_current_pair (0);
 
       for (int trial = 0; trial < 8; trial ++){
         Randomize_gates_for_stages ();
@@ -98,7 +106,7 @@ void loop() {
     }
 
     else if (recieved_input_serial == "Stage3\r\n"){
-      ExperimentConfiguration::set_current_pair("1");
+      ExperimentConfiguration::set_current_pair(1);
       
       for (int trial = 0; trial < 8; trial ++){
         Randomize_gates_for_stages ();
@@ -110,7 +118,7 @@ void loop() {
     }
 
     else if (recieved_input_serial == "Stage4\r\n"){
-      ExperimentConfiguration::set_current_pair ("1");
+      ExperimentConfiguration::set_current_pair (1);
 
       for (int trial = 0; trial < 8; trial ++){
         Randomize_gates_for_stages ();
