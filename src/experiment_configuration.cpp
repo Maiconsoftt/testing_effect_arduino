@@ -16,6 +16,12 @@ int ExperimentConfiguration::current_basal_gate_2;
 int ExperimentConfiguration::current_basal_figure_1;
 int ExperimentConfiguration::current_basal_figure_2;
 
+String ExperimentConfiguration::mouse_id = "";
+
+
+void ExperimentConfiguration::set_mouse_id(String mouse_id){
+        ExperimentConfiguration::mouse_id = mouse_id;
+}
 
 void ExperimentConfiguration::set_current_pair(int current_pair){
         ExperimentConfiguration::current_pair = current_pair;
@@ -73,6 +79,10 @@ int ExperimentConfiguration::get_sound(){
 	else{
 		return 3;
 	}
+}
+
+String ExperimentConfiguration::get_mouse_id(){
+	return ExperimentConfiguration::mouse_id;
 }
 
 int ExperimentConfiguration::get_current_gate(){
