@@ -28,12 +28,12 @@ void controllers_setup () {
 
 
 
-LedControl get_led_array_by_gate_name(String gate_name){
+LedControl get_led_array_by_gate_name(int gate_name){
   
-  if (gate_name == "Left Gate"){
+  if (gate_name == 1){
    return lc1;
   }  
-  else if (gate_name == "CenterGate"){
+  else if (gate_name == 2){
     return lc2;
   }  
   else{
