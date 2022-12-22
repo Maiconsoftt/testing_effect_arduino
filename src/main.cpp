@@ -38,12 +38,19 @@ void loop() {
       commands ();
     }
 
+    else if (recieved_input_serial == "pairs\r\n"){
+      ExperimentConfiguration::set_current_pair(5);
+      randomize_and_create_pairs ();
+      print_pairs ();
+    }
+
     else if (recieved_input_serial == "mouseID\r\n") {
 
       Serial.println("Type Mouse Identification Number");
 
       while (Serial.available () == 0) {}
       recieved_input_serial = Serial.readString();
+      ExperimentConfiguration::set_mouse_id(recieved_input_serial);
       ExperimentConfiguration::set_current_pair(0);
 
       randomize_and_create_pairs ();

@@ -44,4 +44,12 @@ void print_pairs (){
         Serial.print (pair_z_figure);
         Serial.println (pair_z_sound);
     }
+    else if (ExperimentConfiguration::get_current_pair() == 5){
+        Serial.print (pair_x_figure);
+        Serial.println (pair_x_sound);
+        Serial.print (pair_y_figure);
+        Serial.println (pair_y_sound);
+        Serial.print (pair_z_figure);
+        Serial.println (pair_z_sound);
+    }
 }
