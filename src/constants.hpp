@@ -28,10 +28,10 @@ EXPERIMENT PARAMETERS
 }
 namespace CONSTANTS {
 
-    const String Figure_X = "Figure_X";
+    const int Figure_X = 0;
 
     const char figures [3][9] = {"Figure_X", "Figure_O", "Figure_+"}; 
     const char sounds  [3][7] = {"100 Hz", "750 Hz", "2000Hz"};
-    const char gates_array   [3][11] = {"Left Gate", "CenterGate", "Right Gate"};
+    const int gates_array   [3] = {1,2,3};
 }
 #endif
