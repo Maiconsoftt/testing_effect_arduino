@@ -7,105 +7,46 @@
 #include "stimuli_control.hpp"
 #include "gate_controller.hpp"
 #include "constants.hpp"
-
-using namespace CONSTANTS;
+#include "serial_prints.hpp"
 
 void randomize_gate_for_repertory_trainning(){
-    String random_repertory_gate = CONSTANTS::gates_array[random (0, 3)]; //randomize a number from 1 to 3 that corresponds to the target gates'
-    ExperimentConfiguration::set_current_repertory_gate(random_repertory_gate);
+  int current_repertory_gate = random (0,3);
+  ExperimentConfiguration::set_current_repertory_gate(current_repertory_gate);
 }
-  
-void randomize_pairs_sounds_and_figures() {
-  Serial.print ("Recived! Configuring and creating conditions to Mouse "); //print to csv
-  delay (500);
 
-  String pair_x_figure, pair_y_figure, pair_z_figure;
-  String pair_x_sound, pair_y_sound, pair_z_sound;
+void randomize_and_create_pairs (){
+  int x_figure = random (0,3); int x_sound = random (0,3);
+  int y_figure = random (0,3); int y_sound = random (0,3); 
+  int z_figure = random (0,3); int z_sound = random (0,3);
 
-  pair_x_sound = sounds[random(0, 3)];
-  pair_x_figure = figures[random(0, 3)];
-
-  if (pair_x_sound == sounds[0]) {
-
-    pair_y_sound = sounds [random(1, 3)]; //choose between 2 or 3 because 1 was already chosen
-    pair_z_sound = sounds [random(1, 3)];
-    while (pair_z_sound == pair_y_sound) {
-      pair_z_sound = sounds [random(1, 3)];
-    }
+  if ((x_sound == y_sound) || (x_sound == z_sound) || (y_sound == z_sound)){
+    randomSeed (analogRead(random(0,5)));
+    randomize_and_create_pairs();
   }
-
-  if (pair_x_sound == sounds[1]) {
-    pair_y_sound = sounds [random(0, 3)]; //choose between 2 or 3 because 1 was already chosen
-    while (pair_y_sound == sounds[1]) {
-      pair_y_sound = sounds [random(0, 3)];
-    }
-    pair_z_sound = sounds [random(0, 3)];
-    while (pair_z_sound == pair_y_sound || pair_z_sound == pair_x_sound) {
-      pair_z_sound = sounds [random(0, 3)];
-    }
+  else if ((x_figure == y_figure) || (x_figure == z_figure) || (y_figure == z_figure)){
+    randomSeed (analogRead(random(0,5)));
+    randomize_and_create_pairs();
   }
+  ExperimentConfiguration::set_pair_x_figure(x_figure), 
+  ExperimentConfiguration::set_pair_y_figure(y_figure), 
+  ExperimentConfiguration::set_pair_z_figure(z_figure);
+  ExperimentConfiguration::set_pair_x_sound(x_sound), 
+  ExperimentConfiguration::set_pair_y_sound(y_sound), 
+  ExperimentConfiguration::set_pair_z_sound(z_sound);
 
-  if (pair_x_sound == sounds[2]) {
-    pair_y_sound = sounds [random(0, 2)]; //choose between 2 or 3 because 1 was already chosen
-    pair_z_sound = sounds [random(0, 2)];
-    while (pair_z_sound == pair_y_sound) {
-      pair_z_sound = sounds [random(0, 2)];
-    }
-  }
-
-  if (pair_x_figure == figures[0]) {
-    pair_y_figure = figures[random(1, 3)]; //choose between 5 or 6 because 4 was already chosen
-    pair_z_figure = figures[random(1, 3)];
-    while (pair_z_figure == pair_y_figure) {
-      pair_z_figure = figures[random(1, 3)];
-    }
-  }
-
-  if (pair_x_figure == figures[1]) {
-    pair_y_figure = figures [random(0, 3)]; //choose between 2 or 3 because 1 was already chosen
-    while (pair_y_figure == figures[1]) {
-      pair_y_figure = figures [random(0, 3)];
-    }
-    pair_z_figure = figures [random(0, 3)];
-    while (pair_z_figure == pair_x_figure || pair_z_figure == pair_y_figure) {
-      pair_z_figure = figures [random(0, 3)];
-    }
-  }
-
-  if (pair_x_figure == figures[2]) {
-    pair_y_figure = figures[random(0, 2)]; //choose between 5 or 6 because 4 was already chosen
-    pair_z_figure = figures[random(0, 2)];
-    while (pair_z_figure == pair_y_figure) {
-      pair_z_figure = figures[random(0, 2)];
-    }
-  }
-
-  ExperimentConfiguration::set_pair_x_figure(pair_x_figure), 
-  ExperimentConfiguration::set_pair_y_figure(pair_y_figure), 
-  ExperimentConfiguration::set_pair_z_figure(pair_z_figure);
-  ExperimentConfiguration::set_pair_x_sound(pair_x_sound), 
-  ExperimentConfiguration::set_pair_y_sound(pair_y_sound), 
-  ExperimentConfiguration::set_pair_z_sound(pair_z_sound);
-
-  Serial.println ("Pairs:");
-  Serial.print ("X = "); Serial.print (pair_x_sound); Serial.print (" and ");
-  Serial.println (pair_x_figure);
-  delay (200);
-  Serial.print ("Y = "); Serial.print (pair_y_sound); Serial.print (" and ");
-  Serial.println (pair_y_figure);
-  delay (200);
-  Serial.print ("Z = "); Serial.print (pair_z_sound); Serial.print (" and ");
-  Serial.println (pair_z_figure);
+  converting_int_pairs_figures_to_string();
+  converting_int_pairs_sounds_to_string();
 }
 
 void Randomize_gates_for_stages () {
-
-  String basal_gate_1;
-  String basal_gate_2;
-  String new_random_gate = gates_array [random (0, 3)]; //randomize a number from 1 to 3 that corresponds to the target gates'
+  int gates_array [3] = {1,2,3};
+  int basal_gate_1; int basal_gate_2;
+  int new_random_gate = gates_array[random (1, 4)]; //randomize a number from 1 to 3 that corresponds to the target gates'
+  
   ExperimentConfiguration::set_current_gate(new_random_gate);
-  String randomized_gate = ExperimentConfiguration::get_current_gate();
+  int randomized_gate = ExperimentConfiguration::get_current_gate();
 
+  randomSeed(analogRead(random(0, 6)));
 
   Serial.print ("Oppening ");
   Serial.println (ExperimentConfiguration::get_current_gate());
@@ -133,8 +74,4 @@ void Randomize_gates_for_stages () {
     ExperimentConfiguration::set_current_basal_gate_2(basal_gate_2);
     Gates::open_gate_by_name (randomized_gate);
   }
-}
-
-void random_seed_repeat (){
-    randomSeed(analogRead(random(0, 6)));
 }

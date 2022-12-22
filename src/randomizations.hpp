@@ -5,8 +5,7 @@
 
 void randomize_gate_for_repertory_trainning();
 void Randomize_gates_for_stages ();
-void randomize_pairs_sounds_and_figures();
-void random_seed_repeat ();
-
+void randomize_and_create_pairs ();
+void randomize_and_create_pairs ();
 
 #endif
