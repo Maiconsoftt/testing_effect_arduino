@@ -36,19 +36,17 @@ void repertory_trainning () {
 void Repeat_Repertory_trainning () {
   Serial.println ("Closing the Gate");
 
-  String current_gate_repertory = ExperimentConfiguration::get_current_repertory_gate();
+  int current_gate_repertory = ExperimentConfiguration::get_current_repertory_gate();
   Gates::close_gate_by_name(current_gate_repertory);
 
   Serial.println ("The gate was closed! Wait 5 seconds");
   delay (5000);
-
-  random_seed_repeat ();
 }
 
 void End_Repertory_trainning () { //bonsai needs to calculate the time!
   // bonsai needs to work here !! so it can finish the first trial and randomize again
   Serial.print("Closing the gate");
-  String current_gate = ExperimentConfiguration::get_current_repertory_gate();
+  int current_gate = ExperimentConfiguration::get_current_repertory_gate();
   Gates::close_gate_by_name(current_gate);
   Serial.println ("The gate was closed!");
 }
