@@ -1,6 +1,6 @@
 #ifndef __PARAMETERS_HPP__
 #define __PARAMETERS_HPP__
-#include <Arduino.h>
+
 
 namespace PARAMETER{
 /*
@@ -29,9 +29,13 @@ EXPERIMENT PARAMETERS
 namespace CONSTANTS {
 
     const int Figure_X = 0;
+    const int Figure_Y = 1;
+    const int Figure_Z = 2;
 
-    const char figures [3][9] = {"Figure_X", "Figure_O", "Figure_+"}; 
-    const char sounds  [3][7] = {"100 Hz", "750 Hz", "2000Hz"};
-    const int gates_array   [3] = {1,2,3};
+    const int X_sound = 0;
+    const int Y_sound = 1;
+    const int Z_sound = 2;
+
+    const int gates_array[] = {1, 2, 3};
 }
 #endif

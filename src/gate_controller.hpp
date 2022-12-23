@@ -1,8 +1,6 @@
 #ifndef _GATE_CONTROLLER_HPP_
 #define _GATE_CONTROLLER_HPP_
 
-#include <Arduino.h>
-
 namespace Gates {
 
     void setup_gates();

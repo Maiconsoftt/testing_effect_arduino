@@ -5,7 +5,6 @@
 #include "output_controller.hpp"
 #include "constants.hpp"
 
-
 //lc1 = left arm, lc2 = central arm, lc3 = right arm
 LedControl lc1 = LedControl(7, 5, 6, 1); // define matrix DIN, CLK, CS pins and the number of devices, respectively
 LedControl lc2 = LedControl(10, 8, 9, 1);
@@ -15,18 +14,12 @@ const int buzzer = A0;
 
 void controllers_setup () {
 
-  Serial.begin(9600); // boundrate of serialport communication
-  Serial.println("Initializing and configuring routines");
-
-
   lc1.clearDisplay(0); lc2.clearDisplay(0); lc3.clearDisplay(0);
   lc1.shutdown(0, false); lc2.shutdown(0, false); lc3.shutdown(0, false);
   lc1.setIntensity(0, 1); lc2.setIntensity(0, 1); lc3.setIntensity(0, 1);
 
   pinMode(buzzer, OUTPUT); //set buzzer pin as output
 }
-
-
 
 LedControl get_led_array_by_gate_name(int gate_name){
   
@@ -63,7 +56,6 @@ void draw_X (LedControl lc,  int intensity = PARAMETER::MIN_INTENSITY_VALUE){
   lc.setRow(0, 6, x[6]);
   lc.setRow(0, 7, x[7]);
 }
-
 
 void draw_ball(LedControl lc,  int intensity = PARAMETER::MIN_INTENSITY_VALUE) {
   byte o[8] = {B00111100, B01111110, B11100111, B11000011, 

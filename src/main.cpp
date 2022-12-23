@@ -7,18 +7,15 @@
 #include "gate_controller.hpp"
 #include "randomizations.hpp"
 #include "constants.hpp"
-#include "parameters.hpp"
 
 char buff[35];
 
 void setup() {
-
-  Serial.begin(9600); // boudrate of serialport communication
-
+  Serial.begin(9600); 
+  setup_random();
   ExperimentConfiguration::set_current_pair(0);
   Gates::setup_gates();
   controllers_setup();
-  randomSeed(analogRead(5)); //read random noise from analog pin 5 and generate random seeds
 
   for (int a = 5; a <= 13; a++){
     pinMode (a, OUTPUT);
@@ -30,40 +27,39 @@ void setup() {
 
 void loop() {
 
-  if (Serial.available()) { //if serial receives more than 0 bytes, than there is someting to read
+  if (Serial.available()) { 
 
-    String recieved_input_serial = Serial.readString();
+    String received_input_serial = Serial.readString();
 
-    if (recieved_input_serial == "commands\r\n") {
+    if (received_input_serial == "commands\r\n") {
       commands ();
     }
 
-    else if (recieved_input_serial == "pairs\r\n"){
+    else if (received_input_serial == "pairs\r\n"){
       ExperimentConfiguration::set_current_pair(5);
       randomize_and_create_pairs ();
-      print_pairs ();
+      print_current_pairs ();
     }
 
-    else if (recieved_input_serial == "mouseID\r\n") {
+    else if (received_input_serial == "mouseID\r\n") {
 
       Serial.println("Type Mouse Identification Number");
 
       while (Serial.available () == 0) {}
-      recieved_input_serial = Serial.readString();
-      ExperimentConfiguration::set_mouse_id(recieved_input_serial);
+      received_input_serial = Serial.readString();
+      ExperimentConfiguration::set_mouse_id(received_input_serial);
       ExperimentConfiguration::set_current_pair(0);
 
-      randomize_and_create_pairs ();
+      randomize_and_create_pairs();
+      converting_all_int_pairs_figures_to_string();
+      converting_all_int_pairs_sounds_to_string();
       
-      print_pairs ();
+      print_current_pairs ();
 
-      Serial.println (String(ExperimentConfiguration::get_pair_x_figure()));
-      Serial.println (String(ExperimentConfiguration::get_pair_x_sound()));
       delay (100);
     }
 
-    //stage_0 - repertory training
-    else if (recieved_input_serial == "stage0\r\n") {
+    else if (received_input_serial == "stage0\r\n") {
       Serial.println ("Put the mouse at the central compartment");
       Serial.println ("Initializing Repertory Trainning in 60 seconds");
       for (int i = 0; i <= 60; i ++) {
@@ -74,18 +70,18 @@ void loop() {
       repertory_trainning ();
     }
 
-    else if (recieved_input_serial == "repeat\r\n") {
+    else if (received_input_serial == "repeat\r\n") {
       delay (100);
       Repeat_Repertory_trainning ();
       repertory_trainning ();
     }
 
-    else if (recieved_input_serial == "end\r\n") {
+    else if (received_input_serial == "end\r\n") {
       delay (100);
       End_Repertory_trainning ();
     }
 
-    else if (recieved_input_serial == "Stage1\r\n"){
+    else if (received_input_serial == "Stage1\r\n"){
       ExperimentConfiguration::set_current_pair(0);
     
       ExperimentConfiguration::set_current_basal_figure_1(ExperimentConfiguration::pair_y_figure);
@@ -100,7 +96,7 @@ void loop() {
       }
     }
 
-    else if (recieved_input_serial == "Stage2\r\n"){
+    else if (received_input_serial == "Stage2\r\n"){
       ExperimentConfiguration::set_current_pair (0);
 
       for (int trial = 0; trial < 8; trial ++){
@@ -112,7 +108,7 @@ void loop() {
       }
     }
 
-    else if (recieved_input_serial == "Stage3\r\n"){
+    else if (received_input_serial == "Stage3\r\n"){
       ExperimentConfiguration::set_current_pair(1);
       
       for (int trial = 0; trial < 8; trial ++){
@@ -124,7 +120,7 @@ void loop() {
       }
     }
 
-    else if (recieved_input_serial == "Stage4\r\n"){
+    else if (received_input_serial == "Stage4\r\n"){
       ExperimentConfiguration::set_current_pair (1);
 
       for (int trial = 0; trial < 8; trial ++){

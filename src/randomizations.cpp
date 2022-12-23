@@ -1,13 +1,48 @@
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 
-#include "tasks.hpp"
 #include "experiment_configuration.hpp"
-#include "output_controller.hpp"
-#include "stimuli_control.hpp"
-#include "gate_controller.hpp"
 #include "constants.hpp"
-#include "serial_prints.hpp"
+
+
+int _rand_range(int n)
+{
+    int r, ul;
+    ul = RAND_MAX - RAND_MAX % n;
+    while ((r = random(RAND_MAX)) >= ul);
+    return r % n;
+}
+
+void _shuffle_swap(int index_a, int index_b, int *array, int size)
+{
+    char *x, *y, tmp[size];
+
+    if (index_a == index_b) return;
+
+    x = (char*)array + index_a * size;
+    y = (char*)array + index_b * size;
+
+    memcpy(tmp, x, size);
+    memcpy(x, y, size);
+    memcpy(y, tmp, size);
+}
+
+void _shuffle(int *array, size_t nmemb)
+{
+  size_t  size = sizeof(int);
+
+  int r;
+    
+  while (nmemb > 1) {                                                                      
+      r = _rand_range(nmemb--);                                                              
+      _shuffle_swap(nmemb, r, array, size);
+  }
+}
+
+void setup_random(){
+  randomSeed(analogRead(5));
+}
+
 
 void randomize_gate_for_repertory_trainning(){
   int current_repertory_gate = random (0,3);
@@ -16,20 +51,20 @@ void randomize_gate_for_repertory_trainning(){
 
 void randomize_and_create_pairs (){
 
-  Serial.println ("Recieved! Configuring pairs to Mouse " + ExperimentConfiguration::get_mouse_id());
+  Serial.println ("Received! Configuring pairs for Mouse " + ExperimentConfiguration::get_mouse_id());
 
-  int x_figure = random (0,3); int x_sound = random (0,3);
-  int y_figure = random (0,3); int y_sound = random (0,3); 
-  int z_figure = random (0,3); int z_sound = random (0,3);
+  int figure_options[] = {CONSTANTS::Figure_X, CONSTANTS::Figure_Y, CONSTANTS::Figure_Z};
+  _shuffle(figure_options, sizeof(figure_options)/sizeof(int));
+  int x_figure = figure_options[0];
+  int y_figure = figure_options[1];
+  int z_figure = figure_options[2];
 
-  if ((x_sound == y_sound) || (x_sound == z_sound) || (y_sound == z_sound)){
-    randomSeed (analogRead(random(0,5)));
-    randomize_and_create_pairs();
-  }
-  else if ((x_figure == y_figure) || (x_figure == z_figure) || (y_figure == z_figure)){
-    randomSeed (analogRead(random(0,5)));
-    randomize_and_create_pairs();
-  }
+  int sound_options[] = {CONSTANTS::X_sound, CONSTANTS::Y_sound, CONSTANTS::Z_sound};
+  _shuffle(sound_options, sizeof(sound_options)/sizeof(int));
+  int x_sound = sound_options[0];
+  int y_sound = sound_options[1];
+  int z_sound = sound_options[2];
+
   ExperimentConfiguration::set_pair_x_figure(x_figure), 
   ExperimentConfiguration::set_pair_y_figure(y_figure), 
   ExperimentConfiguration::set_pair_z_figure(z_figure);
@@ -37,14 +72,12 @@ void randomize_and_create_pairs (){
   ExperimentConfiguration::set_pair_y_sound(y_sound), 
   ExperimentConfiguration::set_pair_z_sound(z_sound);
 
-  converting_int_pairs_figures_to_string();
-  converting_int_pairs_sounds_to_string();
 }
 
 void Randomize_gates_for_stages () {
   int gates_array [3] = {1,2,3};
   int basal_gate_1; int basal_gate_2;
-  int new_random_gate = gates_array[random (1, 4)]; //randomize a number from 1 to 3 that corresponds to the target gates'
+  int new_random_gate = gates_array[random (1, 4)];
   
   ExperimentConfiguration::set_current_gate(new_random_gate);
   int randomized_gate = ExperimentConfiguration::get_current_gate();
@@ -55,26 +88,26 @@ void Randomize_gates_for_stages () {
   Serial.println (ExperimentConfiguration::get_current_gate());
   delay (1000);
 
-  //openning the target gate from randomization
   if (randomized_gate == gates_array[0]) {
     basal_gate_1 = gates_array [1];
     basal_gate_2 = gates_array [2];
     ExperimentConfiguration::set_current_basal_gate_1(basal_gate_1);
     ExperimentConfiguration::set_current_basal_gate_2(basal_gate_2);
-    Gates::open_gate_by_name (randomized_gate);
+    // Gates::open_gate_by_name (randomized_gate);
   }
   else if (randomized_gate == gates_array [1]) {
     basal_gate_1 = gates_array [0];
     basal_gate_2 = gates_array [2];
     ExperimentConfiguration::set_current_basal_gate_1(basal_gate_1);
     ExperimentConfiguration::set_current_basal_gate_2(basal_gate_2);
-    Gates::open_gate_by_name (randomized_gate);
+    // Gates::open_gate_by_name (randomized_gate);
   }
   else if (randomized_gate == gates_array [2]) {
     basal_gate_1 = gates_array [0];
     basal_gate_2 = gates_array [1];
     ExperimentConfiguration::set_current_basal_gate_1(basal_gate_1);
     ExperimentConfiguration::set_current_basal_gate_2(basal_gate_2);
-    Gates::open_gate_by_name (randomized_gate);
+    // Gates::open_gate_by_name (randomized_gate);
   }
 }
+

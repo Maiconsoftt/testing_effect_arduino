@@ -2,7 +2,7 @@
 #include "output_controller.hpp"
 #include "experiment_configuration.hpp"
 #include "gate_controller.hpp"
-#include "parameters.hpp"
+#include "constants.hpp"
 
 
 void start_light_stimulus(int gate_number, int received_figures){
