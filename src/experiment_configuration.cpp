@@ -62,7 +62,7 @@ int ExperimentConfiguration::get_light_symbol(){
 		return ExperimentConfiguration::pair_z_figure;
 	}
 	else{
-		return 3;
+		return 4;
 	}
 }
 
@@ -77,7 +77,7 @@ int ExperimentConfiguration::get_sound(){
             return ExperimentConfiguration::pair_z_sound;
     }
 	else{
-		return 3;
+		return 4;
 	}
 }
 
