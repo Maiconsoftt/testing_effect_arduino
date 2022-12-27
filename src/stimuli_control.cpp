@@ -1,8 +1,9 @@
 #include <Arduino.h>
-#include "output_controller.hpp"
+#include "leds_controller.hpp"
 #include "experiment_configuration.hpp"
 #include "gate_controller.hpp"
 #include "constants.hpp"
+#include "sounds.hpp"
 
 
 void start_light_stimulus(int gate_number, int received_figures){
@@ -46,13 +47,13 @@ void start_light_3_basal_mode (int thrid_gate_number, int thrid_figure){
 
 void start_sound_stimulus(int randomized_sound){
     if (randomized_sound == 0){
-        Low_Frequency();
+        execute_sound(100);
     }
     else if (randomized_sound == 1){
-        Medium_Frequency();
+        execute_sound(750);
     }
     else if (randomized_sound == 2){
-        High_Frequency();
+        execute_sound(2000);
     }
 }
 
@@ -82,7 +83,7 @@ void close_target_gate(int randomized_gate){
 
 void execute_paired_stimuli(){
     
-    start_light_1_basal_mode (
+    start_basal_light_stimulus(
         ExperimentConfiguration::get_current_gate(), 
         ExperimentConfiguration::get_light_symbol()
     );
@@ -96,12 +97,26 @@ void execute_paired_stimuli(){
         ExperimentConfiguration::get_current_basal_figure_2()
     );
 
-    for (int a = 0; a < 6; a++){
+    delay (1000);
+
+    for (int a = 1; a <= 5; a++){
         start_light_stimulus(
             ExperimentConfiguration::get_current_gate(), 
             ExperimentConfiguration::get_light_symbol()
         );
-            start_sound_stimulus(ExperimentConfiguration::get_sound());
+
+        start_sound_stimulus(ExperimentConfiguration::get_sound());
+
+        delay (1000);
+
+        start_light_1_basal_mode (
+            ExperimentConfiguration::get_current_gate(), 
+            ExperimentConfiguration::get_light_symbol()
+        );
+
+        stop_sound_excution();
+
+        delay (1000);
     }
     delay(5);
 }
@@ -123,8 +138,11 @@ void execute_separated_stimuli(){
 
     for (int a = 0; a < 6; a++){
         start_sound_stimulus(ExperimentConfiguration::get_sound());
-        delay (10);
+        delay (1000);
+        stop_sound_excution();
+        delay (1000);
     }
+
     Gates::open_all_gates();  
     delay(5);
 }
