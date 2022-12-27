@@ -28,6 +28,8 @@ EXPERIMENT PARAMETERS
 }
 namespace CONSTANTS {
 
+    const int buzzer = A0;
+
     const int Figure_X = 0;
     const int Figure_Y = 1;
     const int Figure_Z = 2;
@@ -36,6 +38,10 @@ namespace CONSTANTS {
     const int Y_sound = 1;
     const int Z_sound = 2;
 
-    const int gates_array[] = {1, 2, 3};
+    const int leftGate = 1;
+    const int centerGate = 2;
+    const int rightGate = 3;
+
+    const int gates_array[] = {leftGate, centerGate, rightGate};
 }
 #endif
