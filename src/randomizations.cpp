@@ -4,7 +4,6 @@
 #include "experiment_configuration.hpp"
 #include "constants.hpp"
 
-
 int _rand_range(int n)
 {
     int r, ul;
@@ -40,18 +39,18 @@ void _shuffle(int *array, size_t nmemb)
 }
 
 void setup_random(){
-  randomSeed(analogRead(5));
+  randomSeed(analogRead(0));
 }
 
-
 void randomize_gate_for_repertory_trainning(){
-  int current_repertory_gate = random (0,3);
+  int current_repertory_gate = CONSTANTS::gates_array[random (0,3)];
   ExperimentConfiguration::set_current_repertory_gate(current_repertory_gate);
+  randomSeed(analogRead(random(0,6)));
 }
 
 void randomize_and_create_pairs (){
 
-  Serial.println ("Received! Configuring pairs for Mouse " + ExperimentConfiguration::get_mouse_id());
+  Serial.println ("Configuring pairs for Mouse " + ExperimentConfiguration::get_mouse_id()); delay (1000);
 
   int figure_options[] = {CONSTANTS::Figure_X, CONSTANTS::Figure_Y, CONSTANTS::Figure_Z};
   _shuffle(figure_options, sizeof(figure_options)/sizeof(int));
@@ -71,43 +70,35 @@ void randomize_and_create_pairs (){
   ExperimentConfiguration::set_pair_x_sound(x_sound), 
   ExperimentConfiguration::set_pair_y_sound(y_sound), 
   ExperimentConfiguration::set_pair_z_sound(z_sound);
-
 }
 
 void Randomize_gates_for_stages () {
-  int gates_array [3] = {1,2,3};
+  using namespace CONSTANTS;
+
   int basal_gate_1; int basal_gate_2;
-  int new_random_gate = gates_array[random (1, 4)];
+  int current_stage_gate = gates_array[random (0,3)];
+  randomSeed(analogRead(random(0,6)));
   
-  ExperimentConfiguration::set_current_gate(new_random_gate);
+  ExperimentConfiguration::set_current_gate(current_stage_gate);
   int randomized_gate = ExperimentConfiguration::get_current_gate();
 
-  randomSeed(analogRead(random(0, 6)));
-
-  Serial.print ("Oppening ");
-  Serial.println (ExperimentConfiguration::get_current_gate());
-  delay (1000);
-
-  if (randomized_gate == gates_array[0]) {
-    basal_gate_1 = gates_array [1];
-    basal_gate_2 = gates_array [2];
+  if (randomized_gate == leftGate) {
+    basal_gate_1 = centerGate;
+    basal_gate_2 = rightGate;
     ExperimentConfiguration::set_current_basal_gate_1(basal_gate_1);
     ExperimentConfiguration::set_current_basal_gate_2(basal_gate_2);
-    // Gates::open_gate_by_name (randomized_gate);
   }
-  else if (randomized_gate == gates_array [1]) {
-    basal_gate_1 = gates_array [0];
-    basal_gate_2 = gates_array [2];
+  else if (randomized_gate == centerGate) {
+    basal_gate_1 = leftGate;
+    basal_gate_2 = rightGate;
     ExperimentConfiguration::set_current_basal_gate_1(basal_gate_1);
     ExperimentConfiguration::set_current_basal_gate_2(basal_gate_2);
-    // Gates::open_gate_by_name (randomized_gate);
   }
-  else if (randomized_gate == gates_array [2]) {
-    basal_gate_1 = gates_array [0];
-    basal_gate_2 = gates_array [1];
+  else if (randomized_gate == rightGate) {
+    basal_gate_1 = leftGate;
+    basal_gate_2 = centerGate;
     ExperimentConfiguration::set_current_basal_gate_1(basal_gate_1);
     ExperimentConfiguration::set_current_basal_gate_2(basal_gate_2);
-    // Gates::open_gate_by_name (randomized_gate);
   }
 }
 
