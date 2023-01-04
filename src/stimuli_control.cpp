@@ -40,8 +40,8 @@ void start_light_1_basal_mode (int first_gate_number, int first_figure){
 void start_light_2_basal_mode (int second_gate_number, int second_figure){
     start_basal_light_stimulus (second_gate_number, second_figure); 
 }
-void start_light_3_basal_mode (int thrid_gate_number, int thrid_figure){
-    start_basal_light_stimulus (thrid_gate_number, thrid_figure); 
+void start_light_3_basal_mode (int third_gate_number, int third_figure){
+    start_basal_light_stimulus (third_gate_number, third_figure); 
 }
 
 
@@ -87,7 +87,6 @@ void execute_paired_stimuli(){
         ExperimentConfiguration::get_current_gate(), 
         ExperimentConfiguration::get_light_symbol()
     );
-
     start_basal_light_stimulus(
         ExperimentConfiguration::get_current_basal_gate_1(), 
         ExperimentConfiguration::get_current_basal_figure_1()
@@ -97,7 +96,7 @@ void execute_paired_stimuli(){
         ExperimentConfiguration::get_current_basal_figure_2()
     );
 
-    delay (1000);
+    delay (2000);
 
     for (int a = 1; a <= 5; a++){
         start_light_stimulus(
@@ -109,12 +108,12 @@ void execute_paired_stimuli(){
 
         delay (1000);
 
-        start_light_1_basal_mode (
+        start_basal_light_stimulus (
             ExperimentConfiguration::get_current_gate(), 
             ExperimentConfiguration::get_light_symbol()
         );
 
-        stop_sound_excution();
+        stop_sound_execution();
 
         delay (1000);
     }
@@ -136,13 +135,10 @@ void execute_separated_stimuli(){
         ExperimentConfiguration::get_light_symbol()
     );
 
-    for (int a = 0; a < 6; a++){
+    for (int a = 1; a <= 5; a++){
         start_sound_stimulus(ExperimentConfiguration::get_sound());
         delay (1000);
-        stop_sound_excution();
+        stop_sound_execution();
         delay (1000);
     }
-
-    Gates::open_all_gates();  
-    delay(5);
 }
