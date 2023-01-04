@@ -4,53 +4,51 @@
 
 #include <Arduino.h>
 
+char pair_id [4];
+
 void manual_configuration(){
 
-    String received_input_serial;
+    while (!Serial.available()){}
+    String received_input_serial = Serial.readString();
+    ExperimentConfiguration::set_mouse_id(atoi(received_input_serial.c_str()));
+    Serial.println(received_input_serial);
 
-    print_mouse_message();
-    while (Serial.available () == 0) {}
-    received_input_serial = Serial.readString();
-    ExperimentConfiguration::set_mouse_id(received_input_serial);
-    print_received_serial_input(received_input_serial); 
-
-    print_set_figures_and_sounds ("Pair_X figure");
-    while (Serial.available() == 0){}
-    received_input_serial = Serial.readString();
-    ExperimentConfiguration::set_pair_x_figure(received_input_serial.toInt());
-    print_received_serial_input(received_input_serial);
-
-    print_set_figures_and_sounds ("Pair_Y figure");
+    print_set_figures_and_sounds("Pair_X");
     while (!Serial.available()){}
     received_input_serial = Serial.readString();
-    ExperimentConfiguration::set_pair_y_figure(received_input_serial.toInt());
-    print_received_serial_input(received_input_serial);
+    extracting_char_from_serial(received_input_serial);
+    ExperimentConfiguration::set_pair_x_figure(converting_char_to_int(pair_id[0]));
+    ExperimentConfiguration::set_pair_x_sound(converting_char_to_int(pair_id[1]));
 
-    print_set_figures_and_sounds ("Pair_Z figure");
-    while (Serial.available() == 0){}
+    print_set_figures_and_sounds ("Pair_Y");
+    while (!Serial.available()){}
     received_input_serial = Serial.readString();
-    ExperimentConfiguration::set_pair_z_figure(received_input_serial.toInt());
-    print_received_serial_input(received_input_serial);
+    extracting_char_from_serial(received_input_serial);
+    ExperimentConfiguration::set_pair_y_figure(converting_char_to_int(pair_id[0]));
+    ExperimentConfiguration::set_pair_y_sound(converting_char_to_int(pair_id[1]));
 
-    print_set_figures_and_sounds ("Pair_X sound");
-    while (Serial.available() == 0){}
+    print_set_figures_and_sounds ("Pair_Z");
+    while (!Serial.available()){}
     received_input_serial = Serial.readString();
-    ExperimentConfiguration::set_pair_x_sound(received_input_serial.toInt());
-    print_received_serial_input(received_input_serial);
-
-    print_set_figures_and_sounds ("Pair_Y sound");
-    while (Serial.available() == 0){}
-    received_input_serial = Serial.readString();
-    ExperimentConfiguration::set_pair_y_sound(received_input_serial.toInt());
-    print_received_serial_input(received_input_serial);
-
-    print_set_figures_and_sounds ("Pair_Z sound");
-    while (Serial.available() == 0){}
-    received_input_serial = Serial.readString();
-    ExperimentConfiguration::set_pair_z_sound(received_input_serial.toInt());
-    print_received_serial_input(received_input_serial);
+    extracting_char_from_serial(received_input_serial);
+    ExperimentConfiguration::set_pair_z_figure(converting_char_to_int(pair_id[0]));
+    ExperimentConfiguration::set_pair_z_sound(converting_char_to_int(pair_id[1]));
 
     converting_all_int_pairs_figures_to_string();
     converting_all_int_pairs_sounds_to_string();
     print_all_configurations();
+}
+
+int converting_char_to_int(char character){
+    int number;
+    //number = atoi(&character);
+    sscanf(&character, "%d", &number);
+    return number;
+}
+
+void extracting_char_from_serial(String serial_input){
+    for (unsigned int character = 0; character < serial_input.length(); character++){
+        char extracted_char = serial_input[character];
+        pair_id[character] = extracted_char;
+    }
 }
