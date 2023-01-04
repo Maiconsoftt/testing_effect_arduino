@@ -53,6 +53,7 @@ void draw_X (LedControl lc,  int intensity = PARAMETER::MIN_INTENSITY_VALUE){
   lc.setRow(0, 5, x[5]);
   lc.setRow(0, 6, x[6]);
   lc.setRow(0, 7, x[7]);
+
 }
 
 void draw_ball(LedControl lc,  int intensity = PARAMETER::MIN_INTENSITY_VALUE) {
