@@ -10,25 +10,24 @@
 
 
 // repertory training routine
-void repertory_trainning (){
-  randomize_gate_for_repertory_trainning();
+void repertory_training (){
+  randomize_gate_for_repertory_training();
   converting_all_int_gates_to_string ();
-  print_repertory_trainning ();
+  print_repertory_training ();
   delay (1000);
   //openning the target gate from randomization
   Gates::open_gate_by_name(ExperimentConfiguration::get_current_repertory_gate());
 }
 
-void Repeat_Repertory_trainning () {
+void Repeat_Repertory_training () {
   Gates::close_gate_by_name(ExperimentConfiguration::get_current_repertory_gate());
-  print_end_close_gate (); print_wait ("5 seconds");
+  print_received_input("5s");
   delay (5000);
 }
 
-void End_Repertory_trainning () { //bonsai needs to calculate the time!
+void End_Repertory_training () { //bonsai needs to calculate the time!
   // bonsai needs to work here !! so it can finish the first trial and randomize again
   Gates::close_gate_by_name(ExperimentConfiguration::get_current_repertory_gate());
-  print_end_close_gate ();
 }
 
 void mouse_conditions_creation(){
@@ -40,19 +39,28 @@ void mouse_conditions_creation(){
 
 void execute_paired_stages(){
   Randomize_gates_for_stages ();
-  print_current_gate();
+  print_received_input(String(ExperimentConfiguration::get_current_gate()));
   execute_paired_stimuli();
   Gates::open_gate_by_name(ExperimentConfiguration::get_current_gate());
 }
 
 void execute_working_sound_stages(){
   Randomize_gates_for_stages();
-  print_current_gate();
+  print_received_input(String(ExperimentConfiguration::get_current_gate()));
   execute_separated_stimuli ();
+  Gates::open_all_gates(); 
 }
 
-void finalize_stage(){
+void finalize_stage_trial(){
   shutdown_all_displays();
-  print_wait ("40 seconds");
+  Gates::close_all_gates();
+  print_received_input("40s");
   delay(PARAMETER::INTERVAL_BETWEEN_TRIALS);
+}
+
+void finalize_stage_attempt(){
+  shutdown_all_displays();
+  Gates::close_all_gates();
+  print_received_input("60s");
+  delay(PARAMETER::INTERVAL_BETWEEN_RODENTS);
 }
