@@ -21,8 +21,8 @@ void Gates::setup_gates(){
 }
 
 void Gates::open_all_gates() {
-  for (int angulo = 0; angulo <= 180; angulo += 1) { // Comando que muda a posição do servo de 0 para 180°
-    rightGate.write(angulo); // Comando para angulo específico
+  for (int angulo = 0; angulo <= 180; angulo += 1) { 
+    rightGate.write(angulo); 
     centerGate.write(angulo);
     leftGate.write(angulo);
     delay(8);
@@ -30,8 +30,8 @@ void Gates::open_all_gates() {
 }
 
 void Gates::close_all_gates() {
-  for (int angulo = 180; angulo >= 1; angulo -= 1) { // Comando que muda a posição do servo de 180 para 0°
-    rightGate.write(angulo); // Comando para angulo específico
+  for (int angulo = 180; angulo >= 1; angulo -= 1) { 
+    rightGate.write(angulo); 
     centerGate.write(angulo);
     leftGate.write(angulo);
     delay(8);
@@ -40,20 +40,20 @@ void Gates::close_all_gates() {
 
 void Gates::open_gate_by_name(int gate_name){
     if (gate_name == CONSTANTS::leftGate) {
-        for (int angulo; angulo <= 150; angulo += 1) { // Comando que muda a posição do servo de 0 para 180°
-        leftGate.write(angulo); // Comando para angulo específico
+        for (int angulo; angulo <= 150; angulo += 1) { 
+        leftGate.write(angulo); 
         delay(8);
         }  
     }
     else if (gate_name == CONSTANTS::centerGate) {
-        for (int angulo; angulo <= 150; angulo += 1) { // Comando que muda a posição do servo de 0 para 180°
-        centerGate.write(angulo); // Comando para angulo específico
+        for (int angulo; angulo <= 150; angulo += 1) {
+        centerGate.write(angulo);
         delay(8);
         }
     }
     else if (gate_name == CONSTANTS::rightGate) {
-        for (int angulo; angulo <= 150; angulo += 1) { // Comando que muda a posição do servo de 0 para 180°
-        rightGate.write(angulo); // Comando para angulo específico
+        for (int angulo; angulo <= 150; angulo += 1) { 
+        rightGate.write(angulo);
         delay(8);
         }
     }
@@ -61,20 +61,20 @@ void Gates::open_gate_by_name(int gate_name){
 
 void Gates::close_gate_by_name(int gate_name){
     if (gate_name == CONSTANTS::gates_array[0]) {
-        for (int angulo = 150; angulo >= 1; angulo -= 1) { // Comando que muda a posição do servo de 180 para 0°
-        leftGate.write(angulo); // Comando para angulo específico
+        for (int angulo = 150; angulo >= 1; angulo -= 1) { 
+        leftGate.write(angulo); 
         delay(8);
         }
     }
     else if (gate_name == CONSTANTS::gates_array[1]) {
-        for (int angulo = 150; angulo >= 1; angulo -= 1) { // Comando que muda a posição do servo de 180 para 0°
-        centerGate.write(angulo); // Comando para angulo específico
+        for (int angulo = 150; angulo >= 1; angulo -= 1) { 
+        centerGate.write(angulo); 
         delay(8);
         }
     }
     else if (gate_name == CONSTANTS::gates_array[2]) {
-        for (int angulo = 150; angulo >= 1; angulo -= 1) { // Comando que muda a posição do servo de 180 para 0°
-        rightGate.write(angulo); // Comando para angulo específico
+        for (int angulo = 150; angulo >= 1; angulo -= 1) { 
+        rightGate.write(angulo); 
         delay(8);
         }
     }
