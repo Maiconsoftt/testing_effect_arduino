@@ -42,7 +42,7 @@ void setup_random(){
   randomSeed(analogRead(0));
 }
 
-void randomize_gate_for_repertory_trainning(){
+void randomize_gate_for_repertory_training(){
   int current_repertory_gate = CONSTANTS::gates_array[random (0,3)];
   ExperimentConfiguration::set_current_repertory_gate(current_repertory_gate);
   randomSeed(analogRead(random(0,6)));
