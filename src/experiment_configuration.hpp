@@ -21,10 +21,9 @@ class ExperimentConfiguration{
         static int current_basal_gate_2;
         static int current_basal_figure_1;
         static int current_basal_figure_2;
+        static int mouse_id;
 
-        static String mouse_id;
-
-        static void set_mouse_id(String mouse_id);
+        static void set_mouse_id(int mouse_id);
 
         static void set_current_pair(int current_pair);
         static void set_pair_x_sound(int x_sound);
@@ -40,7 +39,11 @@ class ExperimentConfiguration{
         static void set_current_basal_figure_1(int basal_figure_2);
         static void set_current_basal_figure_2(int basal_figure_2);
         
-        static String get_mouse_id();
+        static int get_mouse_id();
+
+        static String get_pairX_id();
+        static String get_pairY_id();
+        static String get_pairZ_id();
 
         static int get_light_symbol();
         static int get_sound();
