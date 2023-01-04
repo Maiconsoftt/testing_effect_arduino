@@ -3,6 +3,6 @@
 #include <Arduino.h>
 
 void execute_sound (int frequency); 
-void stop_sound_excution ();
+void stop_sound_execution ();
  
 #endif
