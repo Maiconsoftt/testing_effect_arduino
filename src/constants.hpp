@@ -22,6 +22,7 @@ EXPERIMENT PARAMETERS
 
     const int INTERVAL_BETWEEN_TRIALS=40000;
     const int INTERVAL_BETWEEN_RODENTS=60000;
+    const int INTERVAL_BEFORE_ATTEMPT=60;
     const int NUMBER_OF_STAGES_TRIALS=7;
     const int NUMBER_OF_STAGES_REPEATS=5;
 
@@ -43,5 +44,6 @@ namespace CONSTANTS {
     const int rightGate = 3;
 
     const int gates_array[] = {leftGate, centerGate, rightGate};
+
 }
 #endif
