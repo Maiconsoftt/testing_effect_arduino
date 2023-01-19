@@ -1,119 +1,116 @@
 #include <Arduino.h>
+#include <SoftwareSerial.h>
+
 #include "tasks.hpp"
 #include "experiment_configuration.hpp"
 #include "stimuli_control.hpp"
-#include "output_controller.hpp"
+#include "serial_prints.hpp"
+#include "leds_controller.hpp"
 #include "gate_controller.hpp"
 #include "randomizations.hpp"
-
-char buff[35];
+#include "constants.hpp"
+#include "manual_settings.hpp"
 
 void setup() {
-
-  Serial.begin(9600); // boudrate of serialport communication
-
-  ExperimentConfiguration::set_current_pair("0");
+  Serial.begin(9600); Serial.setTimeout(1000); 
+  setup_random();
+  ExperimentConfiguration::set_current_pair(0);
   Gates::setup_gates();
   controllers_setup();
-  randomSeed(analogRead(5)); //read random noise from analog pin 5 and generate random seeds
-
-  for (int a = 5; a <= 13; a++){
-    pinMode (a, OUTPUT);
-    digitalWrite (a, LOW);
-    delay (10);
-  } 
   commands ();
 }
 
 void loop() {
 
-  if (Serial.available()) { //if serial receives more than 0 bytes, than there is someting to read
+  if (Serial.available()) { 
 
-    String a = Serial.readString();
+    String received_input_serial = Serial.readString();
 
-    if (a == "commands\r\n") {
+    if (received_input_serial == "commands\r\n") {
       commands ();
     }
 
-    else if (a == "mouseID\r\n") {
-
-      Serial.println("Type Mouse Identification Number");
-
+    else if (received_input_serial == "mouseID\r\n") {
+      
+      print_received_input(received_input_serial);
       while (Serial.available () == 0) {}
-      a = Serial.readString();
-      randomize_pairs_sounds_and_figures();
-      delay (100);
+      received_input_serial = Serial.readString();
+      ExperimentConfiguration::set_mouse_id(atoi(received_input_serial.c_str()));
+      ExperimentConfiguration::set_current_pair(0);
+      mouse_conditions_creation();
     }
 
-    //stage_0 - repertory training
-    else if (a == "stage0\r\n") {
-      Serial.println ("Put the mouse at the central compartment");
-      Serial.println ("Initializing Repertory Trainning in 60 seconds");
-      for (int i = 0; i <= 60; i ++) {
-        sprintf (buff, "Counting: %ds ...", i);
-        Serial.println (buff);
-        delay (1000);
-      }
-      repertory_trainning ();
+    else if (received_input_serial == "manual\r\n"){
+      print_received_input(received_input_serial);
+      manual_configuration();  
+      delay (1000);
     }
 
-    else if (a == "repeat\r\n") {
-      delay (100);
-      Repeat_Repertory_trainning ();
-      repertory_trainning ();
+    else if (received_input_serial == "stage0\r\n") {
+      print_counting(PARAMETER::INTERVAL_BEFORE_ATTEMPT, "60s");
+      Serial.println ("Beginning Repertory Training. Randomizing gate ..."); delay (1000);
+      repertory_training ();
     }
 
-    else if (a == "end\r\n") {
-      delay (100);
-      End_Repertory_trainning ();
+    else if (received_input_serial == "repeat\r\n") {
+      print_close_gate();
+      Repeat_Repertory_training ();
+      repertory_training ();
     }
 
-    else if (a == "Stage1\r\n"){
-      ExperimentConfiguration::set_current_pair("0");
-      
-      for (int trial = 0; trial < 8; trial ++){
-        Randomize_gates_for_stages ();
-        execute_pairs_stage_1 ();
-
-        shutdown_all_displays();
-        delay(40000);
-      }
+    else if (received_input_serial == "end\r\n") {
+      print_close_gate();
+      End_Repertory_training ();
     }
 
-    else if (a == "Stage2\r\n"){
-      ExperimentConfiguration::set_current_pair ("0");
-
-      for (int trial = 0; trial < 8; trial ++){
-        Randomize_gates_for_stages ();
-        execute_working_sound_stage_2();
-
-        shutdown_all_displays();
-        delay (40000);
-      }
+    else if (received_input_serial == "EndStTrial\r\n"){
+      finalize_stage_trial();
     }
 
-    else if (a == "Stage3\r\n"){
-      ExperimentConfiguration::set_current_pair("1");
-      
-      for (int trial = 0; trial < 8; trial ++){
-        Randomize_gates_for_stages ();
-        execute_pairs_stage_1 ();
-
-        shutdown_all_displays();
-        delay(40000);
-      }
+    else if (received_input_serial == "EndStAttempt\r\n"){
+      finalize_stage_attempt();
     }
 
-    else if (a == "Stage4\r\n"){
-      ExperimentConfiguration::set_current_pair ("1");
+    else if (received_input_serial == "stage1\r\n"){
+      ExperimentConfiguration::set_current_pair(0);
+      ExperimentConfiguration::set_current_basal_figure_1(ExperimentConfiguration::pair_y_figure);
+      ExperimentConfiguration::set_current_basal_figure_2(ExperimentConfiguration::pair_z_figure);
+      print_counting(PARAMETER::INTERVAL_BEFORE_ATTEMPT, "60s");
+      execute_paired_stages();
+    }
 
-      for (int trial = 0; trial < 8; trial ++){
-        Randomize_gates_for_stages ();
-        execute_working_sound_stage_2();
+    else if (received_input_serial == "stage2\r\n"){
+      ExperimentConfiguration::set_current_pair (0);
+      print_counting(PARAMETER::INTERVAL_BEFORE_ATTEMPT, "60s");
+      execute_working_sound_stages();
+    }
 
-        shutdown_all_displays();
-        delay (40000);
-      }
+    else if (received_input_serial == "stage3\r\n"){
+      ExperimentConfiguration::set_current_pair(1);
+      ExperimentConfiguration::set_current_basal_figure_1(ExperimentConfiguration::pair_x_figure);
+      ExperimentConfiguration::set_current_basal_figure_2(ExperimentConfiguration::pair_z_figure);
+      print_counting(PARAMETER::INTERVAL_BEFORE_ATTEMPT, "60s");
+      execute_paired_stages();
+    }
+
+    else if (received_input_serial == "stage4\r\n"){
+      ExperimentConfiguration::set_current_pair (1);
+      print_counting(PARAMETER::INTERVAL_BEFORE_ATTEMPT, "60s");
+      execute_working_sound_stages();
+    }
+
+    else if (received_input_serial == "stage5\r\n"){
+      ExperimentConfiguration::set_current_pair(2);
+      ExperimentConfiguration::set_current_basal_figure_1(ExperimentConfiguration::pair_x_figure);
+      ExperimentConfiguration::set_current_basal_figure_2(ExperimentConfiguration::pair_y_figure);
+      print_counting(PARAMETER::INTERVAL_BEFORE_ATTEMPT, "60s");
+      execute_paired_stages();
+    }
+
+    else if (received_input_serial == "stage6\r\n"){
+      ExperimentConfiguration::set_current_pair (2);
+      print_counting(PARAMETER::INTERVAL_BEFORE_ATTEMPT, "60s");
+      execute_working_sound_stages();
     }
   }
 }
