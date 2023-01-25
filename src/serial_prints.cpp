@@ -35,13 +35,13 @@ String converting_int_pair_sound_to_string(int randomized_sound){
     String string_sound;
     switch (randomized_sound){
         case 0:
-            string_sound = "100Hz(0)";
+            string_sound = "3335Hz(0)";
             break;
         case 1:
-            string_sound = "750Hz(1)";
+            string_sound = "6670Hz(1)";
             break;
         case 2:
-            string_sound = "2000Hz(2)"; //22 bytes
+            string_sound = "13340Hz(2)"; //22 bytes
             break;       
     }
     return string_sound;

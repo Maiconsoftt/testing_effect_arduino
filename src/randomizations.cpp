@@ -50,7 +50,7 @@ void randomize_gate_for_repertory_training(){
 
 void randomize_and_create_pairs (){
 
-  Serial.println ("Configuring pairs for Mouse " + ExperimentConfiguration::get_mouse_id()); delay (1000);
+  Serial.println ("Creating pairs"); delay (1000);
 
   int figure_options[] = {CONSTANTS::Figure_X, CONSTANTS::Figure_Y, CONSTANTS::Figure_Z};
   _shuffle(figure_options, sizeof(figure_options)/sizeof(int));
