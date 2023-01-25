@@ -16,7 +16,7 @@ void setup() {
   setup_random();
   ExperimentConfiguration::set_current_pair(0);
   Gates::setup_gates();
-  controllers_setup();
+  led_and_controllers_setup();
   commands ();
 }
 
@@ -37,13 +37,22 @@ void loop() {
       received_input_serial = Serial.readString();
       ExperimentConfiguration::set_mouse_id(atoi(received_input_serial.c_str()));
       ExperimentConfiguration::set_current_pair(0);
-      mouse_conditions_creation();
+      mouse_conditions_creation(0);
     }
 
     else if (received_input_serial == "manual\r\n"){
       print_received_input(received_input_serial);
       manual_configuration();  
       delay (1000);
+    }
+
+    else if (received_input_serial == "reset\r\n"){
+      setup();      
+      Serial.println("reset");
+    }
+
+    else if (received_input_serial == "info\r\n"){
+      mouse_conditions_creation(1);
     }
 
     else if (received_input_serial == "stage0\r\n") {
@@ -81,6 +90,8 @@ void loop() {
 
     else if (received_input_serial == "stage2\r\n"){
       ExperimentConfiguration::set_current_pair (0);
+      ExperimentConfiguration::set_current_basal_figure_1(ExperimentConfiguration::pair_y_figure);
+      ExperimentConfiguration::set_current_basal_figure_2(ExperimentConfiguration::pair_z_figure);
       print_counting(PARAMETER::INTERVAL_BEFORE_ATTEMPT, "60s");
       execute_working_sound_stages();
     }
@@ -95,6 +106,8 @@ void loop() {
 
     else if (received_input_serial == "stage4\r\n"){
       ExperimentConfiguration::set_current_pair (1);
+      ExperimentConfiguration::set_current_basal_figure_1(ExperimentConfiguration::pair_x_figure);
+      ExperimentConfiguration::set_current_basal_figure_2(ExperimentConfiguration::pair_z_figure);
       print_counting(PARAMETER::INTERVAL_BEFORE_ATTEMPT, "60s");
       execute_working_sound_stages();
     }
@@ -109,6 +122,8 @@ void loop() {
 
     else if (received_input_serial == "stage6\r\n"){
       ExperimentConfiguration::set_current_pair (2);
+      ExperimentConfiguration::set_current_basal_figure_1(ExperimentConfiguration::pair_x_figure);
+      ExperimentConfiguration::set_current_basal_figure_2(ExperimentConfiguration::pair_y_figure);
       print_counting(PARAMETER::INTERVAL_BEFORE_ATTEMPT, "60s");
       execute_working_sound_stages();
     }

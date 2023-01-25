@@ -47,13 +47,13 @@ void start_light_3_basal_mode (int third_gate_number, int third_figure){
 
 void start_sound_stimulus(int randomized_sound){
     if (randomized_sound == 0){
-        execute_sound(100);
+        execute_sound(3335);
     }
     else if (randomized_sound == 1){
-        execute_sound(750);
+        execute_sound(6670);
     }
     else if (randomized_sound == 2){
-        execute_sound(2000);
+        execute_sound(13340);
     }
 }
 
@@ -122,18 +122,20 @@ void execute_paired_stimuli(){
 
 void execute_separated_stimuli(){
 
-    start_light_1_basal_mode (
+    start_basal_light_stimulus (
         ExperimentConfiguration::get_current_basal_gate_1(), 
         ExperimentConfiguration::get_current_basal_figure_1()
     );
-    start_light_2_basal_mode (
+    start_basal_light_stimulus (
         ExperimentConfiguration::get_current_basal_gate_2(), 
         ExperimentConfiguration::get_current_basal_figure_2()
     );
-    start_light_3_basal_mode (
+    start_basal_light_stimulus (
         ExperimentConfiguration::get_current_gate(), 
         ExperimentConfiguration::get_light_symbol()
     );
+
+    delay (2000);
 
     for (int a = 1; a <= 5; a++){
         start_sound_stimulus(ExperimentConfiguration::get_sound());
@@ -141,4 +143,5 @@ void execute_separated_stimuli(){
         stop_sound_execution();
         delay (1000);
     }
+    delay (5);
 }
