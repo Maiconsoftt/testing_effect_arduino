@@ -67,8 +67,8 @@ void commands () {
     Serial.println ("Type 'mouseID' to set mouse identification and pairs");
     Serial.println ("Type 'manual' to configure mouse pairs");
     Serial.println ("Type 'stage + number' to initialize stages (eg: 'stage0')");   
-    Serial.println ("Type 'repeat' to repeat Repertory Training");
-    Serial.println ("Type 'end' to finish Repertory Training"); 
+    Serial.println ("Type 'repeatRT' to repeat Repertory Training");
+    Serial.println ("Type 'endRT' to finish Repertory Training"); 
     Serial.println ("Type 'EndStTrial' to finalize stage trial");  
     Serial.println ("Type 'EndStAttempt' to finalize any stage");
     Serial.println ("Type 'commands' to see this list again\n");

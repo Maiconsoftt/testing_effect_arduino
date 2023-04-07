@@ -61,13 +61,13 @@ void loop() {
       repertory_training ();
     }
 
-    else if (received_input_serial == "repeat\r\n") {
+    else if (received_input_serial == "repeatRT\r\n") {
       print_close_gate();
       Repeat_Repertory_training ();
       repertory_training ();
     }
 
-    else if (received_input_serial == "end\r\n") {
+    else if (received_input_serial == "endRT\r\n") {
       print_close_gate();
       End_Repertory_training ();
     }
