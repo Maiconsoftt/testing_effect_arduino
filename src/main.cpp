@@ -56,15 +56,17 @@ void loop() {
     }
 
     else if (received_input_serial == "stage0\r\n") {
+      print_repertory_gate();
       print_counting(PARAMETER::INTERVAL_BEFORE_ATTEMPT, "60s");
       Serial.println ("Beginning Repertory Training. Randomizing gate ..."); delay (1000);
-      repertory_training ();
+      open_repertory_training_gate ();
     }
 
     else if (received_input_serial == "repeatRT\r\n") {
       print_close_gate();
       Repeat_Repertory_training ();
-      repertory_training ();
+      print_repertory_gate();
+      open_repertory_training_gate ();
     }
 
     else if (received_input_serial == "endRT\r\n") {
@@ -79,53 +81,9 @@ void loop() {
     else if (received_input_serial == "EndStAttempt\r\n"){
       finalize_stage_attempt();
     }
-
-    else if (received_input_serial == "stage1\r\n"){
-      ExperimentConfiguration::set_current_pair(0);
-      ExperimentConfiguration::set_current_basal_figure_1(ExperimentConfiguration::pair_y_figure);
-      ExperimentConfiguration::set_current_basal_figure_2(ExperimentConfiguration::pair_z_figure);
-      print_counting(PARAMETER::INTERVAL_BEFORE_ATTEMPT, "60s");
-      execute_paired_stages();
-    }
-
-    else if (received_input_serial == "stage2\r\n"){
-      ExperimentConfiguration::set_current_pair (0);
-      ExperimentConfiguration::set_current_basal_figure_1(ExperimentConfiguration::pair_y_figure);
-      ExperimentConfiguration::set_current_basal_figure_2(ExperimentConfiguration::pair_z_figure);
-      print_counting(PARAMETER::INTERVAL_BEFORE_ATTEMPT, "60s");
-      execute_working_sound_stages();
-    }
-
-    else if (received_input_serial == "stage3\r\n"){
-      ExperimentConfiguration::set_current_pair(1);
-      ExperimentConfiguration::set_current_basal_figure_1(ExperimentConfiguration::pair_x_figure);
-      ExperimentConfiguration::set_current_basal_figure_2(ExperimentConfiguration::pair_z_figure);
-      print_counting(PARAMETER::INTERVAL_BEFORE_ATTEMPT, "60s");
-      execute_paired_stages();
-    }
-
-    else if (received_input_serial == "stage4\r\n"){
-      ExperimentConfiguration::set_current_pair (1);
-      ExperimentConfiguration::set_current_basal_figure_1(ExperimentConfiguration::pair_x_figure);
-      ExperimentConfiguration::set_current_basal_figure_2(ExperimentConfiguration::pair_z_figure);
-      print_counting(PARAMETER::INTERVAL_BEFORE_ATTEMPT, "60s");
-      execute_working_sound_stages();
-    }
-
-    else if (received_input_serial == "stage5\r\n"){
-      ExperimentConfiguration::set_current_pair(2);
-      ExperimentConfiguration::set_current_basal_figure_1(ExperimentConfiguration::pair_x_figure);
-      ExperimentConfiguration::set_current_basal_figure_2(ExperimentConfiguration::pair_y_figure);
-      print_counting(PARAMETER::INTERVAL_BEFORE_ATTEMPT, "60s");
-      execute_paired_stages();
-    }
-
-    else if (received_input_serial == "stage6\r\n"){
-      ExperimentConfiguration::set_current_pair (2);
-      ExperimentConfiguration::set_current_basal_figure_1(ExperimentConfiguration::pair_x_figure);
-      ExperimentConfiguration::set_current_basal_figure_2(ExperimentConfiguration::pair_y_figure);
-      print_counting(PARAMETER::INTERVAL_BEFORE_ATTEMPT, "60s");
-      execute_working_sound_stages();
+    
+    else {
+      stages(received_input_serial);
     }
   }
 }
