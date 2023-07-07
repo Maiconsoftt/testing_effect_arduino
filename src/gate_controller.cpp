@@ -23,11 +23,11 @@ void Gates::setup_gates(){
 }
 
 void Gates::open_all_gates() {
-    for (int angulo = 0; angulo <= 140; angulo += 1) { 
+    for (int angulo = 0; angulo <= 150; angulo += 1) { 
         rightGate.write(angulo); 
         centerGate.write(angulo);
         leftGate.write(angulo);
-        delay(15);
+        delay(5);
   }
 }
 
@@ -35,48 +35,48 @@ void Gates::open_gate_by_name(int gate_name){
     if (gate_name == CONSTANTS::leftGate) {
         for (int angulo = 0; angulo <= 150; angulo += 1) { 
         leftGate.write(angulo); 
-        delay(10);
+        delay(5);
         }
         for (int angulo = 150; angulo >= 140; angulo -= 1){
         leftGate.write(angulo);
-        delay(10);
+        delay(5);
         }
     }
     else if (gate_name == CONSTANTS::centerGate) {
         for (int angulo = 0; angulo <= 150; angulo += 1) {
         centerGate.write(angulo);
-        delay(10);
+        delay(5);
         }
     }   
     else if (gate_name == CONSTANTS::rightGate) {
         for (int angulo = 0; angulo <= 150; angulo += 1) { 
         rightGate.write(angulo);
-        delay(10);
+        delay(5);
         }
     }
 }
 
 void Gates::close_gate_by_name(int gate_name){
     if (gate_name == CONSTANTS::gates_array[0]) {
-        for (int angulo = 140; angulo >= 1; angulo -= 1) { 
+        for (int angulo = 150; angulo >= 1; angulo -= 1) { 
         leftGate.write(angulo); 
         delay(10);
         }
     }
     else if (gate_name == CONSTANTS::gates_array[1]) {
-        for (int angulo = 140; angulo >= 1; angulo -= 1) { 
+        for (int angulo = 150; angulo >= 1; angulo -= 1) { 
         centerGate.write(angulo); 
         delay(10);
         }
     }
     else if (gate_name == CONSTANTS::gates_array[2]) {
-        for (int angulo = 140; angulo >= 1; angulo -= 1) { 
+        for (int angulo = 150; angulo >= 1; angulo -= 1) { 
         rightGate.write(angulo); 
         delay(10);
         }
     }
     else if (gate_name == 4){
-        for (int angulo = 140; angulo >= 1; angulo -= 1) { 
+        for (int angulo = 150; angulo >= 1; angulo -= 1) { 
         leftGate.write(angulo);
         centerGate.write(angulo);
         rightGate.write(angulo); 

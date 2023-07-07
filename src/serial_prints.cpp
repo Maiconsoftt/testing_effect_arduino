@@ -61,14 +61,15 @@ String converting_int_gate_to_string(int randomized_gate){
             break;       
     }
     return string_gate;
+    current_gate = string_gate;
 }
 
 void commands () { 
     Serial.println ("Type 'mouseID' to set mouse identification and pairs");
     Serial.println ("Type 'manual' to configure mouse pairs");
     Serial.println ("Type 'stage + number' to initialize stages (eg: 'stage0')");   
-    Serial.println ("Type 'repeat' to repeat Repertory Training");
-    Serial.println ("Type 'end' to finish Repertory Training"); 
+    Serial.println ("Type 'repeatRT' to repeat Repertory Training");
+    Serial.println ("Type 'endRT' to finish Repertory Training"); 
     Serial.println ("Type 'EndStTrial' to finalize stage trial");  
     Serial.println ("Type 'EndStAttempt' to finalize any stage");
     Serial.println ("Type 'commands' to see this list again\n");
@@ -97,9 +98,13 @@ void converting_all_int_pairs_sounds_to_string(){
     pair_z_sound = converting_int_pair_sound_to_string(ExperimentConfiguration::pair_z_sound);
 }
 
-void converting_all_int_gates_to_string(){
-    current_repertory_gate = converting_int_gate_to_string (ExperimentConfiguration::get_current_repertory_gate());
-    current_gate = converting_int_gate_to_string(ExperimentConfiguration::get_current_gate());
+void converting_all_int_gates_to_string(int stages){
+    if (stages == 0){
+        current_repertory_gate = converting_int_gate_to_string (ExperimentConfiguration::get_current_repertory_gate());
+    }
+    else if (stages == 1){
+        current_gate = converting_int_gate_to_string(ExperimentConfiguration::get_current_gate());
+    }    
 }
 
 void print_current_pairs(){
@@ -138,25 +143,23 @@ void print_set_figures_and_sounds (String number){
     Serial.println(pair);
 }
 
-void print_repertory_training(){
-    Serial.println ("Opening: " + current_repertory_gate);
-}
-
 void print_close_gate(){
     Serial.println ("Closing gate");
 }
 
 void print_received_input(String input){
-    if (input == "60s" || input == "40s" || input == "5s"){
+    if (input == "60s" || input == "5s"){
         Serial.println ("Wait " + input);
     }
     else if (input == "mouseID\r\n" || input == "manual\r\n"){
         Serial.println("Type Mouse ID");
     }
-    else if (input ==  converting_int_gate_to_string(ExperimentConfiguration::get_current_gate()) 
-    || input == converting_int_gate_to_string(ExperimentConfiguration::get_current_repertory_gate())){
-        Serial.println ("Target gate = " + input);
+    else if (input ==  "repertory_gate"){
+        Serial.println ("Target gate = " + current_repertory_gate);
     }    
+    else if (input == "current_gate"){
+        Serial.println ("Target gate = " + current_gate);
+    }
     else{
         Serial.println(input);
     }
